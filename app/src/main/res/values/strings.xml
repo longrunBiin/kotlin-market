@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">market</string>
+    <string name="home">home</string>
+    <string name="chatting">chatting</string>
+    <string name="myInfo">myInfo</string>
+    <string name="no_permission">no_permission\n</string>
+    <string name="req_permission_reason">need permission</string>
+</resources>
