@@ -1,21 +1,15 @@
 package com.example.market
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
-import android.provider.MediaStore
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-
 import com.example.market.chatlist.ChatListFragment
 import com.example.market.home.HomeFragment
 import com.example.market.mypage.MyPageFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 
 // androidx에 있는 Fragment를 import 해와야 함
 
@@ -32,7 +26,15 @@ class MainActivity : AppCompatActivity() {
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 
-        replaceFragment(myPageFragment)
+        if (Firebase.auth.currentUser == null) {
+            startActivity(
+                Intent(this, LoginActivity::class.java)
+            )
+            finish()
+        }
+
+
+        replaceFragment(HomeFragment())
         // setOnNavigationItemSelectedListener는 네비게이션바의 탭들이 선택되었을 때 호출되어 선택된 탭의 id가 내려온다.
         bottomNavigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
@@ -54,5 +56,6 @@ class MainActivity : AppCompatActivity() {
                 commit()
             }
     }
+
 
 }
