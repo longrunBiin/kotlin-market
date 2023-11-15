@@ -53,12 +53,12 @@ class LoginActivity : AppCompatActivity() {
         userEmail.addTextChangedListener {
             val enable = userEmail.text.isNotEmpty() && password.text.isNotEmpty()
             sign_in.isEnabled = enable
-            sign_up.isEnabled = enable
+            //sign_up.isEnabled = enable
         }
         password.addTextChangedListener {
             val enable = userEmail.text.isNotEmpty() && password.text.isNotEmpty()
             sign_in.isEnabled = enable
-            sign_up.isEnabled = enable
+            //sign_up.isEnabled = enable
         }
 
     }
@@ -94,20 +94,23 @@ class LoginActivity : AppCompatActivity() {
     private fun initSignUpButton() {
         sign_up.setOnClickListener {
 
-            val email = getInputEmail()
-            val password = getInputPassword()
+//            val email = getInputEmail()
+//            val password = getInputPassword()
+//
+//            auth.createUserWithEmailAndPassword(email, password)
+//                .addOnCompleteListener(this) { task ->
+//                    if (task.isSuccessful) {
+//                        Toast.makeText(this, "회원가입에 성공했습니다", Toast.LENGTH_SHORT).show()
+//                        doLogin(email, password)
+//
+//                    } else {
+//                        Toast.makeText(this, "이미 가입한 이메일이거나, 회원가입에 실패했습니다.", Toast.LENGTH_SHORT)
+//                            .show()
+//                    }
+//                }
+            // SignUpActivity로 이동하는 코드
+            startActivity(Intent(this, SignUpActivity::class.java))
 
-            auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        Toast.makeText(this, "회원가입에 성공했습니다", Toast.LENGTH_SHORT).show()
-                        doLogin(email, password)
-
-                    } else {
-                        Toast.makeText(this, "이미 가입한 이메일이거나, 회원가입에 실패했습니다.", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                }
         }
     }
 
