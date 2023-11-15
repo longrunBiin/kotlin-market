@@ -1,0 +1,17 @@
+<!-- button_bg.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 버튼이 눌렸을 때의 배경 -->
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="8dp" />
+            <solid android:color="#FF5722" /> <!-- 눌렸을 때의 색상 -->
+        </shape>
+    </item>
+    <!-- 버튼의 기본 배경 -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="8dp" />
+            <solid android:color="#FF7043" /> <!-- 버튼의 기본 색상 -->
+        </shape>
+    </item>
+</selector>
