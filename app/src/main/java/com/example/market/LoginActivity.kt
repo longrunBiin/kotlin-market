@@ -45,6 +45,8 @@ class LoginActivity : AppCompatActivity() {
         initSignUpButton()
         initEmailAndPAsswordEditText()
 
+        sign_in.isEnabled = false
+
     }
 
     // 입력값 없음에 대한 예외처리
