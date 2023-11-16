@@ -1,11 +1,14 @@
 package com.example.market.mypage
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import com.example.market.LoginActivity
 import com.example.market.R
 import com.example.market.databinding.FragmentChatlistBinding
 import com.example.market.databinding.FragmentMypageBinding
@@ -27,6 +30,16 @@ class MyPageFragment : Fragment(R.layout.fragment_mypage) {
 
         val fragmentMypageBinding = FragmentMypageBinding.bind(view)
         binding = fragmentMypageBinding
+
+
+        val out = view.findViewById<Button>(R.id.logout) // 로그아웃
+        out.setOnClickListener {
+            Firebase.auth.signOut()
+            startActivity(Intent(requireContext(), LoginActivity::class.java))
+            requireActivity().finish() // 현재 액티비티를 종료
+        }
+
+
 
         fragmentMypageBinding.signInOutButton.setOnClickListener {
             binding?.let { binding ->
