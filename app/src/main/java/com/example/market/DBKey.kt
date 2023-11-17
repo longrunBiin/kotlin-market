@@ -6,5 +6,6 @@ class DBKey {
         const val DB_USERS = "Users"
         const val CHILD_CHAT = "Chat"
         const val DB_CHATS = "Chats"
+
     }
 }
