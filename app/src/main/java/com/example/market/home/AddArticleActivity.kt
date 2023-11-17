@@ -73,6 +73,7 @@ class AddArticleActivity : AppCompatActivity() {
             val title = findViewById<EditText>(R.id.titleEditText).text.toString().orEmpty()
             val price = findViewById<EditText>(R.id.priceEditText).text.toString().orEmpty()
             val sellerId = auth.currentUser?.uid.orEmpty()
+            val status = Status.ONSALE
 
             // 해당 작업은 test 결과 경우에 따라 2초 정도 요소되는 등 상당히 긴 시간이 소요되었다..
             // 따라서 사용자가 진행이 정상적으로 되었고 있다고 인식할 수 있도록 하기 위해 ProgressBar를 병행해서 사용해줘야 한다.
@@ -140,7 +141,7 @@ class AddArticleActivity : AppCompatActivity() {
     // 위의 코드에서 이 메소드가 사용된 부분을 보면 if로 image를 다루는 넣는 영역은 비동기이고 else로 빠진 영역은 동기이므로,
     // 메소드를 사용하여 각각의 영역에서 데이터를 넣는 식으로 코딩해주어야 한다.
     private fun uploadArticle(sellerId: String, title: String, price: String, imageUrl: String) {
-        val model = ArticleModel(sellerId, title, System.currentTimeMillis(), "$price 원", imageUrl)
+        val model = ArticleModel(sellerId, title, System.currentTimeMillis(), "$price 원", imageUrl, "ONSALE")
         articleDB.push().setValue(model)
 
         hideProgress()
