@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.market.DBKey.Companion.CHILD_CHAT
@@ -30,6 +32,24 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var userDB: DatabaseReference
 
     private val articleList = mutableListOf<ArticleModel>()
+
+    fun filterArticlesBySaleStatus(onSale: Boolean) {
+        val filteredList = articleList.filter { article ->
+            when (onSale) {
+                true -> {
+                    article.status == "ONSALE"
+                }
+                false ->{
+                    article.status == "SOLDOUT"
+
+                }
+            }
+
+        }
+
+        // Update the adapter with the filtered list
+        articleAdapter.submitList(filteredList)
+    }
 
     //     액티비티의 경우 재사용하지 않기 때문에 문제 없지만
 //     Fragment의 경우 재사용되기 때문에
@@ -82,22 +102,22 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         key = System.currentTimeMillis()
                     )
 
-                    userDB.child(auth.currentUser!!.uid)
-                        .child(CHILD_CHAT)
-                        .push()
-                        .setValue(chatRoom)
+//                    userDB.child(auth.currentUser!!.uid)
+//                        .child(CHILD_CHAT)
+//                        .push()
+//                        .setValue(chatRoom)
+//
+//                    userDB.child(articleModel.sellerId)
+//                        .child(CHILD_CHAT)
+//                        .push()
+//                        .setValue(chatRoom)
 
-                    userDB.child(articleModel.sellerId)
-                        .child(CHILD_CHAT)
-                        .push()
-                        .setValue(chatRoom)
-
-                    Snackbar.make(view,"채팅방이 생성되었습니다. 채팅 탭에서 확인해주세요.", Snackbar.LENGTH_LONG).show()
-
-                } else {
-                    // todo 내가 올린 아이템일 때
-                    Snackbar.make(view,"내가 올린 아이템 입니다.", Snackbar.LENGTH_LONG).show()
-
+//                    Snackbar.make(view,"채팅방이 생성되었습니다. 채팅 탭에서 확인해주세요.", Snackbar.LENGTH_LONG).show()
+//
+//                } else {
+//                    // todo 내가 올린 아이템일 때
+//                    Snackbar.make(view,"내가 올린 아이템 입니다.", Snackbar.LENGTH_LONG).show()
+//
                 }
 
             } else {
@@ -123,10 +143,46 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
         }
 
+        fragmentHomeBinding.filteringButton.setOnClickListener { view ->
+            // Creating a PopupMenu with the anchor view as the filteringButton
+            val popupMenu = PopupMenu(requireContext(), view)
+
+            // Inflating the menu resource file
+            popupMenu.menuInflater.inflate(R.menu.filtering_menu, popupMenu.menu)
+
+            // Setting an item click listener for the menu items
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.menu_item_onsale -> {
+                        filterArticlesBySaleStatus(true) // true for on sale
+                        true
+                    }
+                    R.id.menu_item_soldout -> {
+                        filterArticlesBySaleStatus(false) // false for sold out
+                        true
+                    }
+                    R.id.menu_item_all -> {
+                        articleAdapter.submitList(articleList)
+                        Snackbar.make(view,"전체 ", Snackbar.LENGTH_LONG).show()
+                        true
+                    }
+                    // Add more cases for additional menu items as needed
+                    else -> false
+                }
+            }
+
+            // Showing the PopupMenu
+            popupMenu.show()
+        }
+
+
+
         // onViewCreated()가 될 때마다(즉, Fragment가 생성될 때마다) 이벤트 리스너를 붙여줌
         articleDB.addChildEventListener(listener)
 
+
     }
+
 
     override fun onResume() {
         super.onResume()

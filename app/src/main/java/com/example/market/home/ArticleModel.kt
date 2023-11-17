@@ -7,9 +7,10 @@ data class ArticleModel(
     val title: String,
     val createdAt: Long,
     val price: String,
-    val imageUrl: String
+    val imageUrl: String,
+    var status: String
 ){
-    constructor(): this("","",0,"","")
+    constructor(): this("","",0,"","", "")
 }
 // Firebase RealTime Database에서 Model Class를 통해 데이터를 주고 받고 싶을 떄는
 // 반드시 위와 같이 빈 생성자를 정의해줘야 한다. -> ( 아마 null 예외처리 때문인 듯 함 )

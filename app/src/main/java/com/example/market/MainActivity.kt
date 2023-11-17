@@ -2,6 +2,9 @@ package com.example.market
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.market.chatlist.ChatListFragment
@@ -57,5 +60,30 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.filtering_menu, menu)
+        return true
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item?.itemId) {
+            R.id.menu_item_all -> {
+                Toast.makeText(this, "전체 선택 됨", Toast.LENGTH_SHORT).show()
+                return true
+            }
+
+            R.id.menu_item_soldout -> {
+                Toast.makeText(this, "판매완료 선택 됨", Toast.LENGTH_SHORT).show()
+                return true
+            }
+
+            R.id.menu_item_onsale -> {
+                Toast.makeText(this, "판매중 선택 됨", Toast.LENGTH_SHORT).show()
+                return true
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+
+    }
 }
