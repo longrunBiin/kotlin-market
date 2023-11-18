@@ -44,16 +44,43 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarLayout" />
 
-    <EditText
-        android:id="@+id/priceEditText"
+    <LinearLayout
+        android:id="@+id/priceLayout"
         android:layout_width="0dp"
-        android:inputType="numberDecimal"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginHorizontal="16dp"
-        android:hint="가격"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/titleEditText" />
+        app:layout_constraintTop_toBottomOf="@id/titleEditText">
+
+        <EditText
+            android:id="@+id/priceEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="가격"
+            android:inputType="numberDecimal" />
+
+        <TextView
+            android:id="@+id/wonTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="원" />
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/detailDescriptionTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:hint="상세 설명"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/priceLayout" />
+
 
     <Button
         android:id="@+id/imageAddButton"

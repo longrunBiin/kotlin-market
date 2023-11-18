@@ -30,13 +30,15 @@ class AddArticleActivity : AppCompatActivity() {
     private val auth: FirebaseAuth by lazy {
         Firebase.auth
     }
-    private val storage: FirebaseStorage by lazy {
+        private val storage: FirebaseStorage by lazy {
         Firebase.storage
     }
     private val articleDB: DatabaseReference by lazy {
         Firebase.database.reference.child(DB_ARTICLES)
     }
-
+    private val description: String by lazy {
+        findViewById<EditText>(R.id.detailDescriptionTextView).text.toString().orEmpty()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_article)
@@ -88,7 +90,7 @@ class AddArticleActivity : AppCompatActivity() {
                 uploadPhoto(
                     PhotoUri,
                     successHandler = { uri ->
-                        uploadArticle(sellerId, title, price, uri)
+                        uploadArticle(sellerId, title, price, uri, description)
                     },
                     errorHandler = {
                         Toast.makeText(this, "사진 업로드에 실패했습니다.", Toast.LENGTH_SHORT).show()
@@ -98,7 +100,7 @@ class AddArticleActivity : AppCompatActivity() {
                     }
                 )
             } else {
-                uploadArticle(sellerId, title, price, "")
+                uploadArticle(sellerId, title, price, "", description)
 
             }
 
@@ -140,13 +142,15 @@ class AddArticleActivity : AppCompatActivity() {
 
     // 위의 코드에서 이 메소드가 사용된 부분을 보면 if로 image를 다루는 넣는 영역은 비동기이고 else로 빠진 영역은 동기이므로,
     // 메소드를 사용하여 각각의 영역에서 데이터를 넣는 식으로 코딩해주어야 한다.
-    private fun uploadArticle(sellerId: String, title: String, price: String, imageUrl: String) {
-        val model = ArticleModel(sellerId, title, System.currentTimeMillis(), "$price 원", imageUrl, "ONSALE")
-        articleDB.push().setValue(model)
+    private fun uploadArticle(sellerId: String, title: String, price: String, imageUrl: String, description: String) {
+        // push()를 먼저 호출하고 chatKey를 얻습니다.
+        val newArticleReference = articleDB.push()
+        val chatKey = newArticleReference.key ?: throw Exception("Could not get chatKey.")
+
+        val model = ArticleModel(sellerId, title, System.currentTimeMillis(), price, imageUrl, "ONSALE", description, chatKey)
+        newArticleReference.setValue(model)
 
         hideProgress()
-        // ProgressBar 감추기
-
         finish()
     }
 

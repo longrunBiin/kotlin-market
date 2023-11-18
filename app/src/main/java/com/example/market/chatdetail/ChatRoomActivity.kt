@@ -33,7 +33,7 @@ class ChatRoomActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chatroom)
 
-        val chatkey = intent.getLongExtra("chatKey", -1)
+        val chatkey = intent.getStringExtra("chatKey")
 
         chatDB = Firebase.database.reference.child(DB_CHATS).child(chatkey.toString())
 
@@ -69,6 +69,7 @@ class ChatRoomActivity : AppCompatActivity() {
             )
 
             chatDB?.push()?.setValue(chatItem)
+            adapter.notifyDataSetChanged()
         }
     }
 }

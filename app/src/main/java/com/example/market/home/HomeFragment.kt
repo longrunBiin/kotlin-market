@@ -67,8 +67,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             articleAdapter.submitList(articleList)
 
         }
-        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
-        override fun onChildRemoved(snapshot: DataSnapshot) {}
+        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+            val articleModel = snapshot.getValue(ArticleModel::class.java) ?: return
+
+            val index = articleList.indexOfFirst { it.chatKey == articleModel.chatKey }
+            if (index > -1) {  // 게시글이 리스트에 있을 때만 업데이트
+                articleList[index] = articleModel
+                articleAdapter.notifyItemChanged(index)
+            }
+        }        override fun onChildRemoved(snapshot: DataSnapshot) {}
         override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
         override fun onCancelled(error: DatabaseError) {}
     }
@@ -197,4 +204,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         // Fragment의 View가 Destroy될 때마다 이벤트 리스너가 remove를 해주는 방식을 사용해야 한다.
         articleDB.removeEventListener(listener)
     }
+
+
+
 }

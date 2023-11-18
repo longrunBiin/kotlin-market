@@ -1,5 +1,6 @@
 package com.example.market.home
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -7,11 +8,17 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.market.databinding.ItemArticleBinding
+import com.example.market.detail.DetailActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import java.text.SimpleDateFormat
 import java.util.*
 
 class ArticleAdapter(val onItemClicked: (ArticleModel) -> Unit) : ListAdapter<ArticleModel, ArticleAdapter.ViewHolder>(diffUtil) {
+
+    private val auth: FirebaseAuth by lazy {
+        FirebaseAuth.getInstance()
+    }
 
     // ViewBinding을 통해 레이아웃에서 가져옴
     inner class ViewHolder(private val binding: ItemArticleBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -22,7 +29,7 @@ class ArticleAdapter(val onItemClicked: (ArticleModel) -> Unit) : ListAdapter<Ar
 
             binding.titleTextView.text = articleModel.title
             binding.dateTextView.text = format.format(date).toString()
-            binding.priceTextView.text = articleModel.price
+            binding.priceTextView.text = "${articleModel.price}원"
             binding.statusTextView.text = articleModel.status
 
 //            if (articleModel.imageUrl.isNotEmpty()) {
@@ -60,6 +67,7 @@ class ArticleAdapter(val onItemClicked: (ArticleModel) -> Unit) : ListAdapter<Ar
         }
     }
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             ItemArticleBinding.inflate(
@@ -71,7 +79,21 @@ class ArticleAdapter(val onItemClicked: (ArticleModel) -> Unit) : ListAdapter<Ar
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(currentList[position])
+        val articleModel = currentList[position]
+        holder.bind(articleModel)
+
+        holder.itemView.setOnClickListener {
+            val intent = Intent(holder.itemView.context, DetailActivity::class.java).apply {
+                putExtra("chatKey", articleModel.chatKey)
+                putExtra("title", articleModel.title)
+                putExtra("price", articleModel.price)
+                putExtra("description", articleModel.description)
+                putExtra("imageUrl", articleModel.imageUrl)
+                putExtra("isSeller", articleModel.sellerId == auth.currentUser?.uid)
+
+            }
+            holder.itemView.context.startActivity(intent)
+        }
     }
 
     companion object {
@@ -89,4 +111,5 @@ class ArticleAdapter(val onItemClicked: (ArticleModel) -> Unit) : ListAdapter<Ar
             }
         }
     }
+
 }
