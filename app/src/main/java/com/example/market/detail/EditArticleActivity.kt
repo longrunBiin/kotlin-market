@@ -84,7 +84,7 @@ class EditArticleActivity : AppCompatActivity() {
     private fun updateArticle() {
         val updatedTitle = editTitleEditText.text.toString().trim()
         val updatedPrice = editPriceEditText.text.toString().trim()
-        val updatedDescription = editTitleEditText.text.toString().trim()
+        val updatedDescription = editDescriptionEditText.text.toString().trim()
 
         if (chatKey.isNotEmpty()) {
             Log.d("EditArticleActivity", "Attempting to update article with chatKey: $chatKey")
