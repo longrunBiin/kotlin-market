@@ -8,15 +8,15 @@
 
     <ImageView
         android:id="@+id/imageViewLogo"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="485dp"
+        android:layout_height="220dp"
         android:contentDescription="shopping"
 
         app:layout_constraintBottom_toTopOf="@id/email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/han_mask" />
+        app:srcCompat="@drawable/main_logo" />
 
     <EditText
         android:id="@+id/email"
