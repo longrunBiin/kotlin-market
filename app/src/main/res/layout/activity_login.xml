@@ -55,7 +55,7 @@
         android:layout_marginEnd="24dp"
         android:background="@drawable/button_bg"
         android:text="로그인"
-        android:textColor="@android:color/white"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/password" />
@@ -64,9 +64,10 @@
         android:id="@+id/sign_up"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
+        android:background="@drawable/button_bg"
         android:text="회원가입"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
