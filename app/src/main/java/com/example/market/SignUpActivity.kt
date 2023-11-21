@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import com.google.android.material.textview.MaterialTextView
@@ -20,8 +21,8 @@ class SignUpActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
 
-    val back: MaterialTextView by lazy {
-        findViewById<MaterialTextView>(R.id.textViewLoginLink)
+    val back: AppCompatTextView by lazy {
+        findViewById<AppCompatTextView>(R.id.textViewLoginLink)
     }
 
     val sign_up: Button by lazy {
