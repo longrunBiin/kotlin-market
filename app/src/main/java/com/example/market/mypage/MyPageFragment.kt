@@ -5,22 +5,28 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.example.market.LoginActivity
 import com.example.market.R
+import com.example.market.SignUpActivity
 import com.example.market.databinding.FragmentChatlistBinding
 import com.example.market.databinding.FragmentMypageBinding
 
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserInfo
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 
 class MyPageFragment : Fragment(R.layout.fragment_mypage) {
-
     private var binding: FragmentMypageBinding? = null
     private val auth: FirebaseAuth by lazy {
         Firebase.auth
@@ -32,7 +38,6 @@ class MyPageFragment : Fragment(R.layout.fragment_mypage) {
 
     // Realtime Database에서 사용자 정보 가져오기
     val database = FirebaseDatabase.getInstance()
-    //val usersRef = database.getReference("UserInfo").child(uid)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,6 +45,38 @@ class MyPageFragment : Fragment(R.layout.fragment_mypage) {
         val fragmentMypageBinding = FragmentMypageBinding.bind(view)
         binding = fragmentMypageBinding
 
+        // Add the following code to retrieve user information from the Realtime Database
+        uid?.let { nonNullUid ->
+            val usersRef = database.getReference("UserInfo").child(nonNullUid)
+
+            usersRef.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    // Check if the snapshot has data
+                    if (snapshot.exists()) {
+                        // The snapshot contains user information
+                        val user = snapshot.getValue(SignUpActivity.User::class.java)
+                        // Now you can use 'user' to access the user information
+                        if (user != null) {
+                            // Update the TextView with user information
+                            val userNameTextView = view.findViewById<TextView>(R.id.userNametextView)
+                            userNameTextView.text = "Username: ${user.username}"
+                            val userEmailTextView = view.findViewById<TextView>(R.id.userEmailTextView)
+                            userEmailTextView.text = "Email: ${user.email}"
+                            val userBirthTextView = view.findViewById<TextView>(R.id.userBirthTextView)
+                            userBirthTextView.text = "Birth Day: ${user.dob}"
+                        }
+                    } else {
+                        // Handle the case when there is no data for the current user
+                        Log.d("MyPageFragment", "No data found for the current user")
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Handle errors here
+                    Log.e("MyPageFragment", "Error retrieving user data: ${error.message}")
+                }
+            })
+        }
 
         val out = view.findViewById<Button>(R.id.logout) // 로그아웃
         out.setOnClickListener {
