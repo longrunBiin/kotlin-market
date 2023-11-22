@@ -36,12 +36,22 @@
         android:padding="16dp"
         android:textSize="14sp" />
 
+    <TextView
+        android:id="@+id/detailStatusTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/detailDescriptionTextView"
+        android:padding="16dp"
+        android:textSize="14sp" />
+
     <Button
         android:id="@+id/detailChatButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/detailDescriptionTextView"
-        android:layout_margin="16dp"
+        android:layout_below="@+id/detailStatusTextView"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="16dp"
         android:text="판매자에게 채팅 보내기"
         android:visibility="visible" />
 
@@ -50,8 +60,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/detailDescriptionTextView"
-        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="253dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:text="게시글 수정"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
 </RelativeLayout>

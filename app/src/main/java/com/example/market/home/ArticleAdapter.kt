@@ -30,8 +30,7 @@ class ArticleAdapter(val onItemClicked: (ArticleModel) -> Unit) : ListAdapter<Ar
             binding.titleTextView.text = articleModel.title
             binding.dateTextView.text = format.format(date).toString()
             binding.priceTextView.text = "${articleModel.price}원"
-            binding.statusTextView.text = articleModel.status
-
+            binding.statusTextView.text = if (articleModel.status == Status.ONSALE.name) "판매중" else "판매완료"
 //            if (articleModel.imageUrl.isNotEmpty()) {
 //                Glide.with(binding.thumbnailImageView)
 //                    .load(articleModel.imageUrl)
@@ -89,6 +88,7 @@ class ArticleAdapter(val onItemClicked: (ArticleModel) -> Unit) : ListAdapter<Ar
                 putExtra("price", articleModel.price)
                 putExtra("description", articleModel.description)
                 putExtra("imageUrl", articleModel.imageUrl)
+                putExtra("status", articleModel.status)  // 'status' 정보 추가
                 putExtra("isSeller", articleModel.sellerId == auth.currentUser?.uid)
 
             }

@@ -12,12 +12,14 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.market.R
 import com.example.market.chatdetail.ChatRoomActivity
+import com.example.market.home.Status
 
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var detailTitleTextView: TextView
     private lateinit var detailPriceTextView: TextView
     private lateinit var detailDescriptionTextView: TextView
+    private lateinit var detailStatusTextView: TextView
     private val REQUEST_CODE_EDIT_ARTICLE = 100
 
 
@@ -28,6 +30,7 @@ class DetailActivity : AppCompatActivity() {
         detailTitleTextView = findViewById(R.id.detailTitleTextView)
         detailPriceTextView = findViewById(R.id.detailPriceTextView)
         detailDescriptionTextView = findViewById(R.id.detailDescriptionTextView)
+        detailStatusTextView = findViewById(R.id.detailStatusTextView)
         val detailImageView: ImageView = findViewById(R.id.detailImageView)
         val detailChatButton: Button = findViewById(R.id.detailChatButton)
         val detailEditButton: Button = findViewById(R.id.detailEditButton)
@@ -39,10 +42,13 @@ class DetailActivity : AppCompatActivity() {
         val priceWithWon = "$price"+"원"
         val description = intent.getStringExtra("description") ?: ""
         val imageUrl = intent.getStringExtra("imageUrl") ?: ""
+        val status = intent.getStringExtra("status")
+        Log.d("DetailActivity", "Received status: $status")
 
         detailTitleTextView.text = title
         detailPriceTextView.text = priceWithWon
         detailDescriptionTextView.text = description
+        detailStatusTextView.text = if (status == Status.ONSALE.name || status == null) "판매중" else "판매완료"
 
         Glide.with(this)
             .load(imageUrl)
@@ -62,6 +68,8 @@ class DetailActivity : AppCompatActivity() {
                 intent.putExtra("price", price)
                 intent.putExtra("description", description)
                 intent.putExtra("imageUrl", imageUrl)
+                val status = if (detailStatusTextView.text == "판매중") Status.ONSALE.name else Status.SOLDOUT.name
+                intent.putExtra("status", status)  // 'status' 정보 추가
                 startActivityForResult(intent, REQUEST_CODE_EDIT_ARTICLE)
             }
 
@@ -83,16 +91,19 @@ class DetailActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-
         if (requestCode == REQUEST_CODE_EDIT_ARTICLE && resultCode == Activity.RESULT_OK) {
             val updatedTitle = data?.getStringExtra("title")
             val updatedPrice = data?.getStringExtra("price")
             val updatedDescription = data?.getStringExtra("description")
             val updatedPriceWithWon = "$updatedPrice"+"원"
+            val updatedStatus = data?.getStringExtra("status")
+
 
             detailTitleTextView.text = updatedTitle
             detailPriceTextView.text = updatedPriceWithWon
             detailDescriptionTextView.text = updatedDescription
+            detailStatusTextView.text = if (updatedStatus == Status.ONSALE.name) "판매중" else "판매완료"
+            intent.putExtra("status", updatedStatus)
         }
     }
 }

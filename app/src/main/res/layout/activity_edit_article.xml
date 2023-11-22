@@ -122,4 +122,14 @@
         app:layout_constraintTop_toBottomOf="@id/editSubmitButton"
         android:visibility="gone" />
 
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="판매 여부"
+        app:layout_constraintBottom_toTopOf="@+id/editSubmitButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editDescriptionEditText" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

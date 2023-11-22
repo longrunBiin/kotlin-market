@@ -43,7 +43,6 @@ class AddArticleActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_article)
 
-
         findViewById<Button>(R.id.imageAddButton).setOnClickListener {
             when {
                 ContextCompat.checkSelfPermission(

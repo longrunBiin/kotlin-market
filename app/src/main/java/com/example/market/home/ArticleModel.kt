@@ -8,7 +8,7 @@ data class ArticleModel(
     val createdAt: Long,
     var price: String,
     val imageUrl: String,
-    var status: String,
+    var status: String = Status.ONSALE.name,
     var description: String,
     val chatKey: String? = null
 ){
