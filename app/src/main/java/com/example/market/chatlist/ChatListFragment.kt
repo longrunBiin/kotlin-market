@@ -47,8 +47,6 @@ class ChatListFragment:Fragment(R.layout.fragment_chatlist) {
 
         })
 
-        chatRoomList.clear()
-
         fragmentChatlistBinding.chatListRecyclerView.adapter = chatListAdapter
         fragmentChatlistBinding.chatListRecyclerView.layoutManager = LinearLayoutManager(context)
 
@@ -64,9 +62,8 @@ class ChatListFragment:Fragment(R.layout.fragment_chatlist) {
         // todo  따라서 forEach로 들어온 List에서 Data model을 하나씩 분리하여 가져와야 한다.
         chatDB.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
+                chatRoomList.clear()
                 // todo 서버에서 데이터를 가져오는 것에 성공하면 호출
-
-
                 // snapshot.children에 Data model들을 담은 하나의 리스트가 내려옴
                 // 이 리스트에서 Data model들을 하나씩 분리하는 작업이 필요 ( forEach )
                 snapshot.children.forEach{
@@ -75,6 +72,7 @@ class ChatListFragment:Fragment(R.layout.fragment_chatlist) {
 
                     chatRoomList.add(model)
                 }
+
 
                 chatListAdapter.submitList(chatRoomList)
                 chatListAdapter.notifyDataSetChanged()

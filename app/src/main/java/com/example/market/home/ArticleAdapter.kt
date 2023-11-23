@@ -90,7 +90,7 @@ class ArticleAdapter(val onItemClicked: (ArticleModel) -> Unit) : ListAdapter<Ar
                 putExtra("imageUrl", articleModel.imageUrl)
                 putExtra("status", articleModel.status)  // 'status' 정보 추가
                 putExtra("isSeller", articleModel.sellerId == auth.currentUser?.uid)
-
+                putExtra("sellerId", articleModel.sellerId)
             }
             holder.itemView.context.startActivity(intent)
         }
