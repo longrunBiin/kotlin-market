@@ -30,7 +30,7 @@ class AddArticleActivity : AppCompatActivity() {
     private val auth: FirebaseAuth by lazy {
         Firebase.auth
     }
-        private val storage: FirebaseStorage by lazy {
+    private val storage: FirebaseStorage by lazy {
         Firebase.storage
     }
     private val articleDB: DatabaseReference by lazy {

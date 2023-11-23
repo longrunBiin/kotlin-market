@@ -33,9 +33,12 @@ class ChatRoomActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chatroom)
 
-        val chatkey = intent.getStringExtra("chatKey")
 
-        chatDB = Firebase.database.reference.child(DB_CHATS).child(chatkey.toString())
+        val userId = auth.currentUser?.uid.orEmpty()
+        val chatKey = intent.getStringExtra("chatKey")
+
+        //chatDB = Firebase.database.reference.child(DB_CHATS).child(chatkey.orEmpty())
+        chatDB = Firebase.database.reference.child(DB_CHATS).child(userId).child(chatKey.toString())
 
         chatDB?.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
@@ -62,14 +65,25 @@ class ChatRoomActivity : AppCompatActivity() {
             .format(t_date)
 
         findViewById<Button>(R.id.sendButton).setOnClickListener {
-            val chatItem = ChatItem(
-                senderId = auth.currentUser?.uid.orEmpty(),
-                message = findViewById<EditText>(R.id.messageEditText).text.toString(),
-                time = nowTime
-            )
+            val userId = auth.currentUser?.uid // 현재 로그인한 사용자의 uid를 가져옵니다.
+            if (userId != null) {
+                // Firebase Realtime Database에서 UserInfo를 가져옵니다.
+                val userRef = Firebase.database.reference.child("UserInfo").child(userId)
+                userRef.get().addOnSuccessListener {
+                    // 이메일 정보를 가져옵니다.
+                    val email = it.child("email").value.toString()
 
-            chatDB?.push()?.setValue(chatItem)
-            adapter.notifyDataSetChanged()
+                    val chatItem = ChatItem(
+                        senderId = email,
+                        message = findViewById<EditText>(R.id.messageEditText).text.toString(),
+                        time = nowTime
+                    )
+
+                    chatDB?.push()?.setValue(chatItem)
+                    adapter.notifyDataSetChanged()
+
+                }
+            }
         }
     }
 }

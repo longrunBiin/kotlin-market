@@ -6,17 +6,26 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.market.R
+import com.example.market.chatdetail.ChatItem
 import com.example.market.chatdetail.ChatRoomActivity
 import com.example.market.home.Status
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class DetailActivity : AppCompatActivity() {
 
+
+
     private lateinit var detailTitleTextView: TextView
+    private lateinit var detailUserNameTextView: TextView
     private lateinit var detailPriceTextView: TextView
     private lateinit var detailDescriptionTextView: TextView
     private lateinit var detailStatusTextView: TextView
@@ -28,6 +37,7 @@ class DetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_detail)
 
         detailTitleTextView = findViewById(R.id.detailTitleTextView)
+        detailUserNameTextView = findViewById(R.id.detailUserNameTextView)
         detailPriceTextView = findViewById(R.id.detailPriceTextView)
         detailDescriptionTextView = findViewById(R.id.detailDescriptionTextView)
         detailStatusTextView = findViewById(R.id.detailStatusTextView)
@@ -35,8 +45,20 @@ class DetailActivity : AppCompatActivity() {
         val detailChatButton: Button = findViewById(R.id.detailChatButton)
         val detailEditButton: Button = findViewById(R.id.detailEditButton)
 
+
+        /*
+        val userId = auth.currentUser?.uid // 현재 로그인한 사용자의 uid를 가져옵니다.
+        var username = ""
+        if (userId != null) {
+            // Firebase Realtime Database에서 UserInfo를 가져옵니다.
+            val userRef = Firebase.database.reference.child("UserInfo").child(userId)
+            userRef.get().addOnSuccessListener {
+                // 이메일 정보를 가져옵니다.
+                username = it.child("username").value.toString()}}*/
+
         val chatKey = intent.getStringExtra("chatKey")
         val sellerId = intent.getStringExtra("sellerId") ?: ""
+        val userName = intent.getStringExtra("userName") ?: ""
         val title = intent.getStringExtra("title") ?: ""
         val price = intent.getStringExtra("price") ?: ""
         val priceWithWon = "$price"+"원"
@@ -46,6 +68,7 @@ class DetailActivity : AppCompatActivity() {
         Log.d("DetailActivity", "Received status: $status")
 
         detailTitleTextView.text = title
+        detailUserNameTextView.text = userName
         detailPriceTextView.text = priceWithWon
         detailDescriptionTextView.text = description
         detailStatusTextView.text = if (status == Status.ONSALE.name || status == null) "판매중" else "판매완료"

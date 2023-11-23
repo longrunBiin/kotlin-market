@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
+import com.example.market.detail.DetailActivity
 import com.google.android.material.textview.MaterialTextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -71,10 +72,12 @@ class SignUpActivity : AppCompatActivity() {
                         user?.let {
                             val username = username.text.toString()
                             val dob = dobText.text.toString()
-
                             // Firebase Realtime Database에 유저 정보 추가
                             writeNewUser(it.uid, username, email, dob)
+
                         }
+
+
 
                         doLogin(email, password)
 
