@@ -171,7 +171,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     }
                     R.id.menu_item_all -> {
                         articleAdapter.submitList(articleList)
-                        Snackbar.make(view,"전체 ", Snackbar.LENGTH_LONG).show()
                         true
                     }
                     // Add more cases for additional menu items as needed
