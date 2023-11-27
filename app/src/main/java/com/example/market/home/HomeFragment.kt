@@ -119,17 +119,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         .child(CHILD_CHAT)
                         .push()
                         .setValue(chatRoom)
-                    /*
-                    userDB.child(auth.currentUser!!.uid)
-                        .child(CHILD_CHAT)
-                        .child(chatRoom.key)
-                        .setValue(chatRoom)
+//
+//                    userDB.child(auth.currentUser!!.uid)
+//                        .child(CHILD_CHAT)
+//                        .child(chatRoom.key)
+//                        .setValue(chatRoom)
+//
+//                    userDB.child(articleModel.sellerId)
+//                        .child(CHILD_CHAT)
+//                        .child(chatRoom.key)
+//                        .setValue(chatRoom)
 
-                    userDB.child(articleModel.sellerId)
-                        .child(CHILD_CHAT)
-                        .child(chatRoom.key)
-                        .setValue(chatRoom)
-                        */
 //                    Snackbar.make(view,"채팅방이 생성되었습니다. 채팅 탭에서 확인해주세요.", Snackbar.LENGTH_LONG).show()
 //
 //                } else {

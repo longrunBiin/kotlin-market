@@ -11,12 +11,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.example.market.DBKey
+import com.example.market.DBKey.Companion.CHILD_CHAT
 import com.example.market.R
 import com.example.market.chatdetail.ChatItem
 import com.example.market.chatdetail.ChatRoomActivity
+import com.example.market.chatlist.ChatListItem
 import com.example.market.home.Status
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
@@ -30,9 +34,13 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var detailDescriptionTextView: TextView
     private lateinit var detailStatusTextView: TextView
     private val REQUEST_CODE_EDIT_ARTICLE = 100
-
-
+    private lateinit var userDB : DatabaseReference
+    private val auth: FirebaseAuth by lazy {
+        Firebase.auth
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
+        userDB = Firebase.database.reference.child(DBKey.DB_USERS)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
@@ -103,6 +111,22 @@ class DetailActivity : AppCompatActivity() {
             detailChatButton.setOnClickListener {
                 // 채팅 버튼 클릭 시 처리
                 val chatKey = intent.getStringExtra("chatKey")
+                val chatRoom = ChatListItem(
+                    buyerId = auth.currentUser!!.uid,
+                    sellerId = sellerId,
+                    itemTitle = title,
+                    key = chatKey.toString()
+                )
+                userDB.child(auth.currentUser!!.uid)
+                        .child(CHILD_CHAT)
+                        .child(chatRoom.key)
+                        .setValue(chatRoom)
+
+                userDB.child(chatRoom.sellerId)
+                    .child(CHILD_CHAT)
+                    .child(chatRoom.key)
+                    .setValue(chatRoom)
+
 
                 // ChatRoomActivity를 시작하고 필요한 정보를 전달합니다.
                 val intent = Intent(this, ChatRoomActivity::class.java)
