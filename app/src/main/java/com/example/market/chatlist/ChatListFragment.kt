@@ -67,7 +67,7 @@ class ChatListFragment:Fragment(R.layout.fragment_chatlist) {
                 // snapshot.children에 Data model들을 담은 하나의 리스트가 내려옴
                 // 이 리스트에서 Data model들을 하나씩 분리하는 작업이 필요 ( forEach )
                 snapshot.children.forEach{
-                    val model = it.getValue(ChatListItem::class.java)
+                    var model = it.getValue(ChatListItem::class.java)
                     model ?: return
 
                     chatRoomList.add(model)
