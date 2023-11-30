@@ -66,7 +66,7 @@ class DetailActivity : AppCompatActivity() {
 
         val chatKey = intent.getStringExtra("chatKey")
         val sellerId = intent.getStringExtra("sellerId") ?: ""
-        val userName = intent.getStringExtra("userName") ?: ""
+        val userName = intent.getStringExtra("username") ?: ""
         val title = intent.getStringExtra("title") ?: ""
         val price = intent.getStringExtra("price") ?: ""
         val priceWithWon = "$price"+"원"

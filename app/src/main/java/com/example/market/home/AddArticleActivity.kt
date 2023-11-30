@@ -15,6 +15,7 @@ import androidx.core.content.PackageManagerCompat
 import androidx.core.view.isVisible
 import com.example.market.DBKey.Companion.DB_ARTICLES
 import com.example.market.R
+import com.example.market.chatdetail.ChatItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
@@ -71,39 +72,54 @@ class AddArticleActivity : AppCompatActivity() {
         // 헤당 DB 위치에 임의의 식별용 Key를 만들고 그 안에 해당 DataModel의 데이터를 넣게 된다.
         // ( 즉, 데이터를 새롭게 넣을 때마다 해당 위치에 임의의 Key가 만들어지고, 그 Key의 Value로서 Data Model이 통으로 들어가게 된다. )
         findViewById<Button>(R.id.submitButton).setOnClickListener {
-            val title = findViewById<EditText>(R.id.titleEditText).text.toString().orEmpty()
-            val price = findViewById<EditText>(R.id.priceEditText).text.toString().orEmpty()
-            val sellerId = auth.currentUser?.uid.orEmpty()
-            val status = Status.ONSALE
+            val userId = auth.currentUser?.uid // 현재 로그인한 사용자의 uid를 가져옵니다.
+            if (userId != null) {
+                // Firebase Realtime Database에서 UserInfo를 가져옵니다.
+                val userRef = Firebase.database.reference.child("UserInfo").child(userId)
+                userRef.get().addOnSuccessListener {
+                    // 이메일 정보를 가져옵니다.
+                    val username = it.child("username").value.toString()
+                    val title = findViewById<EditText>(R.id.titleEditText).text.toString().orEmpty()
+                    val price = findViewById<EditText>(R.id.priceEditText).text.toString().orEmpty()
+                    val sellerId = auth.currentUser?.uid.orEmpty()
+                    val status = Status.ONSALE
+                    //TODO sellerID;
 
-            // 해당 작업은 test 결과 경우에 따라 2초 정도 요소되는 등 상당히 긴 시간이 소요되었다..
-            // 따라서 사용자가 진행이 정상적으로 되었고 있다고 인식할 수 있도록 하기 위해 ProgressBar를 병행해서 사용해줘야 한다.
-            // 만약 ProgressBar 도중에 사용자의 Touch로 인한 TouchEvent를 막고 싶다면,
-            // View를 하나 더 만들어서 그 최상단의 View가 ProgressBar가 돌고 있는 중에 나머지의 Touch를 막는 코드를 작성하면 된다.
-            showProgress()
+                    // 해당 작업은 test 결과 경우에 따라 2초 정도 요소되는 등 상당히 긴 시간이 소요되었다..
+                    // 따라서 사용자가 진행이 정상적으로 되었고 있다고 인식할 수 있도록 하기 위해 ProgressBar를 병행해서 사용해줘야 한다.
+                    // 만약 ProgressBar 도중에 사용자의 Touch로 인한 TouchEvent를 막고 싶다면,
+                    // View를 하나 더 만들어서 그 최상단의 View가 ProgressBar가 돌고 있는 중에 나머지의 Touch를 막는 코드를 작성하면 된다.
+                    showProgress()
 
-            // todo 중간에 이미지가 있으면 업로드 과정을 추가
-            if (selectedUri != null) {
-                // 매우 희박한 확률로 다른 쓰래드에 의해 해당 변수가 null처리 될 수도 있으므로 예외처리
-                val PhotoUri = selectedUri ?: return@setOnClickListener
-                uploadPhoto(
-                    PhotoUri,
-                    successHandler = { uri ->
-                        uploadArticle(sellerId, title, price, uri, description)
-                    },
-                    errorHandler = {
-                        Toast.makeText(this, "사진 업로드에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                    // todo 중간에 이미지가 있으면 업로드 과정을 추가
+                    if (selectedUri != null) {
+                        // 매우 희박한 확률로 다른 쓰래드에 의해 해당 변수가 null처리 될 수도 있으므로 예외처리
+                        val PhotoUri = selectedUri ?: return@addOnSuccessListener
+                        uploadPhoto(
+                            PhotoUri,
+                            successHandler = { uri ->
+                                uploadArticle(sellerId, username, title, price, uri, description)
+                            },
+                            errorHandler = {
+                                Toast.makeText(this, "사진 업로드에 실패했습니다.", Toast.LENGTH_SHORT).show()
 
-                        hideProgress()
-                        // ProgressBar 감추기
+                                hideProgress()
+                                // ProgressBar 감추기
+                            }
+                        )
+                    } else {
+                        uploadArticle(sellerId, username, title, price, "", description)
+
                     }
-                )
-            } else {
-                uploadArticle(sellerId, title, price, "", description)
 
+                }
+
+
+
+
+                }
             }
 
-        }
 
     }
 
@@ -139,14 +155,44 @@ class AddArticleActivity : AppCompatActivity() {
             }
     }
 
+
+
+    /*
+    findViewById<Button>(R.id.sendButton).setOnClickListener {
+            val userId = auth.currentUser?.uid // 현재 로그인한 사용자의 uid를 가져옵니다.
+            if (userId != null) {
+                // Firebase Realtime Database에서 UserInfo를 가져옵니다.
+                val userRef = Firebase.database.reference.child("UserInfo").child(userId)
+                userRef.get().addOnSuccessListener {
+                    // 이메일 정보를 가져옵니다.
+                    val email = it.child("email").value.toString()
+
+                    val chatItem = ChatItem(
+                        senderId = email,
+                        message = findViewById<EditText>(R.id.messageEditText).text.toString(),
+                        time = nowTime
+                    )
+
+                    chatDB?.push()?.setValue(chatItem)
+                    adapter.notifyDataSetChanged()
+
+                }
+            }
+        }
+     */
+
+
+    //TODO : 아이디, 닉네임 보내기
+
+
     // 위의 코드에서 이 메소드가 사용된 부분을 보면 if로 image를 다루는 넣는 영역은 비동기이고 else로 빠진 영역은 동기이므로,
     // 메소드를 사용하여 각각의 영역에서 데이터를 넣는 식으로 코딩해주어야 한다.
-    private fun uploadArticle(sellerId: String, title: String, price: String, imageUrl: String, description: String) {
+    private fun uploadArticle(sellerId: String, username : String, title: String, price: String, imageUrl: String, description: String) {
         // push()를 먼저 호출하고 chatKey를 얻습니다.
         val newArticleReference = articleDB.push()
         val chatKey = newArticleReference.key ?: throw Exception("Could not get chatKey.")
 
-        val model = ArticleModel(sellerId, title, System.currentTimeMillis(), price, imageUrl, "ONSALE", description, chatKey)
+        val model = ArticleModel(sellerId, username, title, System.currentTimeMillis(), price, imageUrl, "ONSALE", description, chatKey)
         newArticleReference.setValue(model)
 
         hideProgress()

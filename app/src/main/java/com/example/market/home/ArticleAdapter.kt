@@ -84,6 +84,7 @@ class ArticleAdapter(val onItemClicked: (ArticleModel) -> Unit) : ListAdapter<Ar
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, DetailActivity::class.java).apply {
                 putExtra("chatKey", articleModel.chatKey)
+                putExtra("username", articleModel.username)
                 putExtra("title", articleModel.title)
                 putExtra("price", articleModel.price)
                 putExtra("description", articleModel.description)
