@@ -7,11 +7,11 @@
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\donguk\.android\avd\kotlin-market.avd" />
+            <value value="C:\Users\wales\.android\avd\Pixel_4_API_34.avd" />
           </Key>
         </deviceKey>
       </Target>
     </targetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2023-11-22T10:15:22.862942100Z" />
+    <timeTargetWasSelectedWithDropDown value="2023-11-30T07:57:26.329253500Z" />
   </component>
 </project>

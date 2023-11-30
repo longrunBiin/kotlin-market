@@ -38,7 +38,8 @@ class ChatRoomActivity : AppCompatActivity() {
         val chatKey = intent.getStringExtra("chatKey")
 
         //chatDB = Firebase.database.reference.child(DB_CHATS).child(chatkey.orEmpty())
-        chatDB = Firebase.database.reference.child(DB_CHATS).child(userId).child(chatKey.toString())
+        //chatDB = Firebase.database.reference.child(DB_CHATS).child(chatKey.toString()).child(userId)
+        chatDB = Firebase.database.reference.child(DB_CHATS).child(chatKey.toString())
 
         chatDB?.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
