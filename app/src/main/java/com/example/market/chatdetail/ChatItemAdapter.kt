@@ -33,7 +33,7 @@
                     if (isSent) {
                         binding.root.visibility = View.VISIBLE
                     } else {
-                        binding.root.visibility = View.GONE
+                        binding.root.visibility = View.VISIBLE
                     }
                 }
 
