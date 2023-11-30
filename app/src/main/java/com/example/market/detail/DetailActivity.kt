@@ -75,10 +75,10 @@ class DetailActivity : AppCompatActivity() {
         val status = intent.getStringExtra("status")
         Log.d("DetailActivity", "Received status: $status")
 
-        detailTitleTextView.text = title
-        detailUserNameTextView.text = userName
-        detailPriceTextView.text = priceWithWon
-        detailDescriptionTextView.text = description
+        detailTitleTextView.text = "제목: " + title
+        detailUserNameTextView.text = "판매자: " + userName
+        detailPriceTextView.text = "가격: " + priceWithWon
+        detailDescriptionTextView.text = "상세 내용: " + description
         detailStatusTextView.text = if (status == Status.ONSALE.name || status == null) "판매중" else "판매완료"
 
         Glide.with(this)
